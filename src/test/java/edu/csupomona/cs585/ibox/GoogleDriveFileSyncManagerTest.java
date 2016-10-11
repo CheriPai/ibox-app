@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 
@@ -82,7 +83,57 @@ public class GoogleDriveFileSyncManagerTest {
 				
 		fileSyncManager.addFile(localFile);
 	}
+
+	@Test()
+	public void testDeleteFile() throws IOException {
+		java.io.File localFile = new java.io.File("~/Java/ibox-app/watch/test");
+
+		File file = new File();
+		file.setId("test");
+		file.setTitle("test");
+
+		FileList filelist = new FileList();
+		java.util.List<File> list = new java.util.ArrayList<File>();
+		list.add(file);
+		filelist.setItems(list);
+
+		Files files = mock(Files.class);
+		List request = mock(List.class);
+		Files.Delete delete = mock(Files.Delete.class);
+
+		when(mockedDrive.files()).thenReturn(files);
+		when(files.list()).thenReturn(request);
+		when(request.execute()).thenReturn(filelist);
+		when(files.delete(Mockito.any(String.class))).thenReturn(delete);
+		
+		fileSyncManager.deleteFile(localFile);
+
+		verify(delete).execute();
+	}
 	
+	@Test(expected=FileNotFoundException.class)
+	public void testDeleteFileFileNotFoundException() throws IOException {
+		java.io.File localFile = new java.io.File("~/Java/ibox-app/watch/test");
+
+		File file = new File();
+		file.setId("test_id");
+		file.setTitle("test_title");
+
+		FileList filelist = new FileList();
+		java.util.List<File> list = new java.util.ArrayList<File>();
+		list.add(file);
+		filelist.setItems(list);
+
+		Files files = mock(Files.class);
+		List request = mock(List.class);
+
+		when(mockedDrive.files()).thenReturn(files);
+		when(files.list()).thenReturn(request);
+		when(request.execute()).thenReturn(filelist);
+		
+		fileSyncManager.deleteFile(localFile);
+	}
+
 	@Test
 	public void testGetFileId() throws IOException {
 		File file = new File();
