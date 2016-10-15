@@ -67,5 +67,20 @@ public class GoogleDriveFileSyncManager implements FileSyncManager {
 		}
 		return null;
 	}
+	
+	public boolean fileExists(String fileName) {
+		try {
+			List request = service.files().list();
+			FileList files = request.execute();
+			for(File file : files.getItems()) {
+				if (file.getTitle().equals(fileName)) {
+					return true;
+				}
+			}
+		} catch (IOException e) {
+			System.out.println("An error occurred: " + e);
+		}
+		return false;
+	}
 
 }
