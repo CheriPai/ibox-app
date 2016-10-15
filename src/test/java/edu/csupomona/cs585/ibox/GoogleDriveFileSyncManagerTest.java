@@ -229,7 +229,6 @@ public class GoogleDriveFileSyncManagerTest {
 
 		Files files = mock(Files.class);
 		List request = mock(List.class);
-		Files.Delete delete = mock(Files.Delete.class);
 
 		when(mockedDrive.files()).thenReturn(files);
 		when(files.list()).thenReturn(request);
