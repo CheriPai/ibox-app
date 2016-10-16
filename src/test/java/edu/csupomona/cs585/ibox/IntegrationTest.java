@@ -1,7 +1,9 @@
 package edu.csupomona.cs585.ibox;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -12,6 +14,7 @@ import org.junit.Test;
 
 import edu.csupomona.cs585.ibox.sync.GoogleDriveFileSyncManager;
 import edu.csupomona.cs585.ibox.sync.GoogleDriveServiceProvider;
+
 
 public class IntegrationTest {
 
@@ -38,7 +41,8 @@ public class IntegrationTest {
 		}
 	}
 	
-	@Test public void testUpdateFile() {
+	@Test 
+	public void testUpdateFile() {
 		String fileName = "/home/dat/Java/ibox-app/watch/test";
 		java.io.File localFile = new java.io.File(fileName);
 		try {
@@ -60,7 +64,8 @@ public class IntegrationTest {
 		}
 	}
 	
-	@Test public void testDeleteFile() {
+	@Test 
+	public void testDeleteFile() {
 		String fileName = "/home/dat/Java/ibox-app/watch/test";
 		java.io.File localFile = new java.io.File(fileName);
 		try {
