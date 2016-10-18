@@ -27,11 +27,11 @@ import com.google.api.services.drive.model.FileList;
 import edu.csupomona.cs585.ibox.sync.GoogleDriveFileSyncManager;
 
 public class GoogleDriveFileSyncManagerTest {
-	
+
 	private Drive mockedDrive;
 	private GoogleDriveFileSyncManager fileSyncManager;
 	private ByteArrayOutputStream outContent;
-	
+
 	@Before
 	public void setup() {
 		mockedDrive = mock(Drive.class);
@@ -39,17 +39,17 @@ public class GoogleDriveFileSyncManagerTest {
 		outContent = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(outContent));
 	}
-	
+
 	@After
 	public void cleanup() {
 		System.setOut(null);
 	}
-	
+
 	@Test
 	public void testGoogleDriveFileSyncManager() {
 		assertNotNull(fileSyncManager.service);
 	}
-	
+
 	@Test
 	public void testAddFile() throws IOException {
 		java.io.File localFile = new java.io.File("~/Java/ibox-app/watch/test");
@@ -61,14 +61,14 @@ public class GoogleDriveFileSyncManagerTest {
 		when(mockedDrive.files()).thenReturn(files);
 		when(files.insert(Mockito.any(File.class), Mockito.any(FileContent.class))).thenReturn(insert);
 		when(insert.execute()).thenReturn(file);
-				
+
 		fileSyncManager.addFile(localFile);
 
 		verify(insert).execute();
 		assertEquals("File ID: test_id\n", outContent.toString());
 	}
-	
-	@Test(expected=IOException.class)
+
+	@Test(expected = IOException.class)
 	public void testAddFileIOException() throws IOException {
 		java.io.File localFile = new java.io.File("~/Java/ibox-app/watch/test");
 		File file = new File();
@@ -80,7 +80,7 @@ public class GoogleDriveFileSyncManagerTest {
 		when(mockedDrive.files()).thenReturn(files);
 		when(files.insert(Mockito.any(File.class), Mockito.any(FileContent.class))).thenReturn(insert);
 		when(insert.execute()).thenThrow(new IOException());
-				
+
 		fileSyncManager.addFile(localFile);
 	}
 
@@ -103,9 +103,10 @@ public class GoogleDriveFileSyncManagerTest {
 		when(mockedDrive.files()).thenReturn(files);
 		when(files.list()).thenReturn(request);
 		when(request.execute()).thenReturn(filelist);
-		when(files.update(Mockito.any(String.class), Mockito.any(File.class), Mockito.any(FileContent.class))).thenReturn(update);
+		when(files.update(Mockito.any(String.class), Mockito.any(File.class), Mockito.any(FileContent.class)))
+				.thenReturn(update);
 		when(update.execute()).thenReturn(file);
-				
+
 		fileSyncManager.updateFile(localFile);
 
 		verify(update).execute();
@@ -133,13 +134,13 @@ public class GoogleDriveFileSyncManagerTest {
 		when(request.execute()).thenReturn(filelist);
 		when(files.insert(Mockito.any(File.class), Mockito.any(FileContent.class))).thenReturn(insert);
 		when(insert.execute()).thenReturn(file);
-				
+
 		fileSyncManager.updateFile(localFile);
 		verify(insert).execute();
 		assertEquals("File ID: DNE\n", outContent.toString());
 	}
 
-	@Test(expected=IOException.class)
+	@Test(expected = IOException.class)
 	public void testUpdateFileIOException() throws IOException {
 		java.io.File localFile = new java.io.File("~/Java/ibox-app/watch/test");
 		File file = new File();
@@ -158,9 +159,10 @@ public class GoogleDriveFileSyncManagerTest {
 		when(mockedDrive.files()).thenReturn(files);
 		when(files.list()).thenReturn(request);
 		when(request.execute()).thenReturn(filelist);
-		when(files.update(Mockito.any(String.class), Mockito.any(File.class), Mockito.any(FileContent.class))).thenReturn(update);
+		when(files.update(Mockito.any(String.class), Mockito.any(File.class), Mockito.any(FileContent.class)))
+				.thenReturn(update);
 		when(update.execute()).thenThrow(new IOException());
-				
+
 		fileSyncManager.updateFile(localFile);
 	}
 
@@ -185,13 +187,13 @@ public class GoogleDriveFileSyncManagerTest {
 		when(files.list()).thenReturn(request);
 		when(request.execute()).thenReturn(filelist);
 		when(files.delete(Mockito.any(String.class))).thenReturn(delete);
-		
+
 		fileSyncManager.deleteFile(localFile);
 
 		verify(delete).execute();
 	}
-	
-	@Test(expected=FileNotFoundException.class)
+
+	@Test(expected = FileNotFoundException.class)
 	public void testDeleteFileFileNotFoundException() throws IOException {
 		java.io.File localFile = new java.io.File("~/Java/ibox-app/watch/test");
 
@@ -210,11 +212,11 @@ public class GoogleDriveFileSyncManagerTest {
 		when(mockedDrive.files()).thenReturn(files);
 		when(files.list()).thenReturn(request);
 		when(request.execute()).thenReturn(filelist);
-		
+
 		fileSyncManager.deleteFile(localFile);
 	}
 
-	@Test(expected=IOException.class)
+	@Test(expected = IOException.class)
 	public void testDeleteFileIOException() throws IOException {
 		java.io.File localFile = new java.io.File("~/Java/ibox-app/watch/test");
 
@@ -234,7 +236,7 @@ public class GoogleDriveFileSyncManagerTest {
 		when(files.list()).thenReturn(request);
 		when(request.execute()).thenReturn(filelist);
 		when(files.delete(Mockito.any(String.class))).thenThrow(new IOException());
-		
+
 		fileSyncManager.deleteFile(localFile);
 	}
 
@@ -255,7 +257,7 @@ public class GoogleDriveFileSyncManagerTest {
 		when(mockedDrive.files()).thenReturn(files);
 		when(files.list()).thenReturn(request);
 		when(request.execute()).thenReturn(filelist);
-		
+
 		assertEquals("test_id", fileSyncManager.getFileId("test_title"));
 	}
 
@@ -267,11 +269,11 @@ public class GoogleDriveFileSyncManagerTest {
 		when(mockedDrive.files()).thenReturn(files);
 		when(files.list()).thenReturn(request);
 		when(request.execute()).thenThrow(new IOException());
-		
+
 		fileSyncManager.getFileId("test");
 		assertEquals("An error occurred: java.io.IOException\n", outContent.toString());
 	}
-	
+
 	@Test()
 	public void testGetFileIdNull() throws IOException {
 		File file = new File();
@@ -289,7 +291,7 @@ public class GoogleDriveFileSyncManagerTest {
 		when(mockedDrive.files()).thenReturn(files);
 		when(files.list()).thenReturn(request);
 		when(request.execute()).thenReturn(filelist);
-		
+
 		assertNull(fileSyncManager.getFileId("DNE"));
 	}
 }

@@ -15,14 +15,13 @@ import org.junit.Test;
 import edu.csupomona.cs585.ibox.sync.GoogleDriveFileSyncManager;
 import edu.csupomona.cs585.ibox.sync.GoogleDriveServiceProvider;
 
-
 public class IntegrationTest {
 
 	private GoogleDriveFileSyncManager fileSyncManager;
-	
+
 	@Before
 	public void setup() {
-        fileSyncManager = new GoogleDriveFileSyncManager(GoogleDriveServiceProvider.get().getGoogleDriveClient());
+		fileSyncManager = new GoogleDriveFileSyncManager(GoogleDriveServiceProvider.get().getGoogleDriveClient());
 	}
 
 	@Test
@@ -40,8 +39,8 @@ public class IntegrationTest {
 			localFile.delete();
 		}
 	}
-	
-	@Test 
+
+	@Test
 	public void testUpdateFile() {
 		String fileName = "/home/dat/Java/ibox-app/watch/test";
 		java.io.File localFile = new java.io.File(fileName);
@@ -63,8 +62,8 @@ public class IntegrationTest {
 			localFile.delete();
 		}
 	}
-	
-	@Test 
+
+	@Test
 	public void testDeleteFile() {
 		String fileName = "/home/dat/Java/ibox-app/watch/test";
 		java.io.File localFile = new java.io.File(fileName);
